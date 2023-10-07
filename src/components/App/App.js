@@ -1,8 +1,9 @@
-import { Container, Col, Card, Row, Tooltip, Button, Form } from 'react-bootstrap';
+import { Container, Card } from 'react-bootstrap';
 import './App.css';
 import AddItem from '../AddItem';
 import Select from '../Select';
-import TodoListItem from '../TodoListItem'
+import TodoListItem from '../TodoList/TodoListItem'
+import TodoList from '../TodoList';
 
 
 function App() {
@@ -15,20 +16,19 @@ function App() {
       >
         <Card.Body className="">
           <Card.Title className="text-center justify-content-center align-items-center ">
+            <input class="form-check-input me-0" type="checkbox" checked="true"/>
             <u>My Todo-s</u>
           </Card.Title>
-          
-          <AddItem/>
-      
+
+          <AddItem />
+
           <div className="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
-            <Select name="Filter" options="All"/>
-            <Select name="Sort" options="Added date"/>
+            <Select name="Filter" options="All" />
+            <Select name="Sort" options="Added date" />
           </div>
 
-          <TodoListItem title="Buy groceries for next week" date="28th Jun 2020"/>
-          <TodoListItem  title="Renew car insurance" date="28th Jun 2020"/>
-          <TodoListItem title="Sign up for online course" date="28th Jun 2020" />
-          
+          <TodoList />
+
         </Card.Body>
       </Card>
 
