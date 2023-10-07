@@ -1,8 +1,9 @@
 import React from 'react'
 import { ListGroup, FormCheck, Button} from 'react-bootstrap'
-import { FaTrash, FaPen } from 'react-icons/fa6';
+import {DeleteButton, EditButton} from '../../Buttons';
+import SpecialDate from '../../SpecialDate';
 
-export default function ToDoListItem({title, date}) {
+export default function ToDoListItem({title, date, specialDate}) {
     return (
         <ListGroup className="list-group-horizontal rounded-0 bg-transparent">
             <ListGroup.Item className=" d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
@@ -12,14 +13,12 @@ export default function ToDoListItem({title, date}) {
             <ListGroup.Item className=" px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
                 <p className="lead fw-normal mb-0">{title}</p>
             </ListGroup.Item>
+            {specialDate ? <SpecialDate/>: null }
             <ListGroup.Item className=" ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
                 <div className="d-flex flex-row justify-content-end mb-1">
-                    <Button className='m-1'>
-                        <FaPen/>
-                    </Button>
-                    <Button className='m-1' variant="danger">
-                    <FaTrash/>
-                    </Button>
+                    <EditButton/>
+                    <DeleteButton/>
+                    
                 </div>
                 <div className="text-end text-muted">
                     <a href="#!" className="text-muted">

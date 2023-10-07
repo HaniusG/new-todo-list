@@ -2,23 +2,15 @@ import { Container, Card } from 'react-bootstrap';
 import './App.css';
 import AddItem from '../AddItem';
 import Select from '../Select';
-import TodoListItem from '../TodoList/TodoListItem'
 import TodoList from '../TodoList';
+import Header from "../Header"
 
 
 function App() {
   return (
-    <Container fluid >
+    <Container fluid style={{ borderRadius: ".75rem", backgroundColor: "#eff1f2" }}>
 
-
-      <Card
-        style={{ borderRadius: ".75rem", backgroundColor: "#eff1f2" }}
-      >
-        <Card.Body className="">
-          <Card.Title className="text-center justify-content-center align-items-center ">
-            <input class="form-check-input me-0" type="checkbox" checked="true"/>
-            <u>My Todo-s</u>
-          </Card.Title>
+          <Header/>
 
           <AddItem />
 
@@ -28,12 +20,6 @@ function App() {
           </div>
 
           <TodoList />
-
-        </Card.Body>
-      </Card>
-
-
-
 
     </Container>
   )
