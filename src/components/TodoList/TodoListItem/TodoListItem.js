@@ -3,21 +3,29 @@ import { ListGroup, FormCheck, Button} from 'react-bootstrap'
 import {DeleteButton, EditButton} from '../../Buttons';
 import SpecialDate from '../../SpecialDate';
 
-export default function ToDoListItem({title, date, specialDate}) {
+
+export default function ToDoListItem({ text, important, done, id, date, deleteItem, onDoneOrImp }) {
+    const onDelete = () => {
+        deleteItem(id)
+    } 
+
+    const onDone = () => {
+        onDoneOrImp(id, 'done')
+        
+    }
     return (
         <ListGroup className="list-group-horizontal rounded-0 bg-transparent">
             <ListGroup.Item className=" d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
-                <FormCheck >
-                </FormCheck>
+                <FormCheck checked={done} onChange={onDone}/>
             </ListGroup.Item>
             <ListGroup.Item className=" px-3 py-1 d-flex align-items-center flex-grow-1 border-0 bg-transparent">
-                <p className="lead fw-normal mb-0">{title}</p>
+                <p className="lead fw-normal mb-0">{text}</p>
             </ListGroup.Item>
-            {specialDate ? <SpecialDate/>: null }
+            {important ? <SpecialDate date={date}/>: null }
             <ListGroup.Item className=" ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
                 <div className="d-flex flex-row justify-content-end mb-1">
                     <EditButton/>
-                    <DeleteButton/>
+                    <DeleteButton onDelete={onDelete}/>
                     
                 </div>
                 <div className="text-end text-muted">

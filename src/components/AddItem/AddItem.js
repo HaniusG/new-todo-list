@@ -1,17 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button } from 'react-bootstrap'
+import {FaCalendar} from 'react-icons/fa6'
 
-export default function Header() {
+export default function AddItem({onCalClick, inputValue, onInputChange, onAddItem}) {
+  
+
   return (
-    <div class="d-flex align-items-center m-3">
+    <div className="shadow  bg-white d-flex align-items-center m-3 p-2">
     <input
+      value={inputValue}
+      onChange={onInputChange}
       type="text"
-      className="form-control form-control-lg"
+      className="form-control form-control-lg border-0"
       placeholder="Add new..."
     />
-    <a href="#!" data-mdb-toggle="tooltip" aria-label="Set due date" data-mdb-original-title="Set due date"><i class="fas fa-calendar-alt fa-lg me-3"></i></a>
-
-    <Button>Add</Button>
+    <div  onClick={onCalClick} className='pe-auto d-flex text-primary m-2 text-center align-items-center justify-content-center h2'> <FaCalendar/></div>
+    <Button onClick={onAddItem}>Add</Button>
 
   </div>
   )
