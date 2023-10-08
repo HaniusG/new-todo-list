@@ -1,7 +1,7 @@
 import React from 'react'
 import TodoListItem from './TodoListItem/TodoListItem'
 
-export default function TodoList({items, deleteItem, onDoneOrImp}) {
+export default function TodoList({items, deleteItem, onDoneOrImp, editItem}) {
     const data = items.map(({ text, important, done, date, id }) => {
         return (
           <TodoListItem
@@ -13,6 +13,7 @@ export default function TodoList({items, deleteItem, onDoneOrImp}) {
             date={date}
             deleteItem={deleteItem}
             onDoneOrImp={onDoneOrImp}
+            editItem={editItem}
           />
         );
       });

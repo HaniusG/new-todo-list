@@ -1,18 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ListGroup, FormCheck, Button} from 'react-bootstrap'
 import {DeleteButton, EditButton} from '../../Buttons';
 import SpecialDate from '../../SpecialDate';
 
 
-export default function ToDoListItem({ text, important, done, id, date, deleteItem, onDoneOrImp }) {
+export default function ToDoListItem({ text, important, done, id, date, deleteItem, onDoneOrImp, editItem }) {
     const onDelete = () => {
         deleteItem(id)
     } 
-
+    
     const onDone = () => {
-        onDoneOrImp(id, 'done')
-        
+        onDoneOrImp(id, 'done')   
     }
+
+    const onEdit = () => {
+        editItem(id)
+    }
+
+    
     return (
         <ListGroup className="list-group-horizontal rounded-0 bg-transparent">
             <ListGroup.Item className=" d-flex align-items-center ps-0 pe-3 py-1 rounded-0 border-0 bg-transparent">
@@ -24,7 +29,7 @@ export default function ToDoListItem({ text, important, done, id, date, deleteIt
             {important ? <SpecialDate date={date}/>: null }
             <ListGroup.Item className=" ps-3 pe-0 py-1 rounded-0 border-0 bg-transparent">
                 <div className="d-flex flex-row justify-content-end mb-1">
-                    <EditButton/>
+                    <EditButton onEdit={onEdit}/>
                     <DeleteButton onDelete={onDelete}/>
                     
                 </div>

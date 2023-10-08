@@ -19,6 +19,7 @@ function App() {
   ]
 
 
+
   const [items, setItems] = useState(itemsArr);
 
   const [filter, setFilter] = useState('All');
@@ -35,18 +36,24 @@ function App() {
 
 
 
+
+
+
+
+
+
   const onInputChange = (e) => {
     setInputValue(e.target.value)
   }
 
-  
 
 
- 
+
+
 
 
   const onCalChange = date => {
-    let displaydate = date.getDate()+" "+ date.toLocaleString('default', { month: 'short' }) + " " +date.getFullYear()
+    let displaydate = date.getDate() + " " + date.toLocaleString('default', { month: 'short' }) + " " + date.getFullYear()
     setDate(displaydate.toString());
   };
 
@@ -59,21 +66,27 @@ function App() {
 
   const deleteItem = (id) => {
     const idx = items.findIndex((el) => el.id === id)
-    setItems(prevState=>
+    setItems(prevState =>
       [
-      ...prevState.slice(0, idx),
-      ...prevState.slice(idx + 1)
-    ])
+        ...prevState.slice(0, idx),
+        ...prevState.slice(idx + 1)
+      ])
+  }
+
+  const editItem = (id) => {
+    const item = items.find((el) => el.id === id)
+    setInputValue(item.text)
+    setDate(item.date)
+    deleteItem(id)
   }
 
 
-
-  const onDoneOrImp = (id, button) => {
+  const onDoneOrImp = (id, caseFor) => {
 
     const idx = items.findIndex((el) => el.id === id)
     let newItem = {};
 
-    if (button === "important") {
+    if (caseFor === "important") {
       newItem = {
         ...items[idx],
         important: !items[idx].important
@@ -84,7 +97,7 @@ function App() {
         done: !items[idx].done
       }
     }
-    setItems((prevState)=>
+    setItems((prevState) =>
       [
         ...prevState.slice(0, idx),
         newItem,
@@ -99,7 +112,7 @@ function App() {
 
   const onAddItem = () => {
     const idx = itemsArr.length ? items.length + 1 : 1
-    if(validateInput(inputValue) && validateDate(date)){
+    if (validateInput(inputValue) && validateDate(date)) {
       const newItem = {
         text: inputValue,
         important: false,
@@ -107,22 +120,22 @@ function App() {
         date,
         done: false
       };
-  
-      setItems((prevState)=>
-          [
-            ...prevState, newItem
-          ]
-        )
+
+      setItems((prevState) =>
+        [
+          ...prevState, newItem
+        ]
+      )
 
       setInputValue("")
       setDate("")
       setErrrorMessage(false)
-      }else{
-        setErrrorMessage(true)
-      }
+    } else {
+      setErrrorMessage(true)
     }
-    
-  
+  }
+
+
 
   const onFilter = (items, filter) => {
     switch (filter) {
@@ -159,38 +172,39 @@ function App() {
 
 
   let visibleItems = onSort(items, sort)
-  visibleItems=onFilter(items, filter)
+  visibleItems = onFilter(items, filter)
   return (
-      <Container fluid style={{ borderRadius: ".75rem", backgroundColor: "#eff1f2" }}>
-        <Row>
-          <Col></Col>
+    <Container fluid style={{ borderRadius: ".75rem", backgroundColor: "#eff1f2" }}>
+      <Row>
+        <Col></Col>
 
-          <Col xs={6}>
-            <Header />
-            <p>{date.toString()}</p>
-            <AddItem onCalClick={onCalClick} onAddItem={onAddItem} onInputChange={onInputChange} inputValue={inputValue}/>
-            {errorMessage ? <ErrorMessage text="Add text and date"/>: null}
-            <div className="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
-              <Filter onFilterChange={onFilterChange} />
-              <Sort onSortChange={onSortChange} />
+        <Col xs={6}>
+          <Header />
+          <p>{date.toString()}</p>
+          <AddItem onCalClick={onCalClick} onAddItem={onAddItem} onInputChange={onInputChange} inputValue={inputValue} />
+          {errorMessage ? <ErrorMessage text="Add text and date" /> : null}
+          <div className="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
+            <Filter onFilterChange={onFilterChange} />
+            <Sort onSortChange={onSortChange} />
 
-            </div>
+          </div>
 
-            <TodoList
-              deleteItem={deleteItem}
-              items={visibleItems}
-              onDoneOrImp={onDoneOrImp}
-            />
-          </Col>
+          <TodoList
+            editItem={editItem}
+            deleteItem={deleteItem}
+            items={visibleItems}
+            onDoneOrImp={onDoneOrImp}
+          />
+        </Col>
 
-          <Col> {calClicked ?<TodoCalendar onCalChange={onCalChange} date={date}/>: null}</Col>
-        </Row>
-
-
-      </Container>
+        <Col> {calClicked ? <TodoCalendar onCalChange={onCalChange} date={date} /> : null}</Col>
+      </Row>
 
 
-      )
+    </Container>
+
+
+  )
 }
 
-      export default App;
+export default App;
