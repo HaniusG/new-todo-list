@@ -7,8 +7,8 @@ import Header from "../Header";
 import Sort from '../Sort';
 import { useState } from 'react';
 import TodoCalendar from '../TodoCalendar';
-import ToDoListItem from '../TodoList/TodoListItem/TodoListItem';
-
+import { validateInput, validateDate } from '../../utils/validator';
+import ErrorMessage from '../ErrorMessage';
 
 function App() {
 
@@ -29,6 +29,12 @@ function App() {
 
   const [inputValue, setInputValue] = useState('');
 
+  const [date, setDate] = useState("");
+
+  const [errorMessage, setErrrorMessage] = useState(false)
+
+
+
   const onInputChange = (e) => {
     setInputValue(e.target.value)
   }
@@ -36,11 +42,12 @@ function App() {
   
 
 
-  const [date, setDate] = useState((new Date()).toString());
+ 
 
 
   const onCalChange = date => {
-    setDate(date.toString());
+    let displaydate = date.getDate()+" "+ date.toLocaleString('default', { month: 'short' }) + " " +date.getFullYear()
+    setDate(displaydate.toString());
   };
 
   const onCalClick = () => {
@@ -52,9 +59,10 @@ function App() {
 
   const deleteItem = (id) => {
     const idx = items.findIndex((el) => el.id === id)
-    setItems([
-      ...items.slice(0, idx),
-      ...items.slice(idx + 1)
+    setItems(prevState=>
+      [
+      ...prevState.slice(0, idx),
+      ...prevState.slice(idx + 1)
     ])
   }
 
@@ -76,11 +84,11 @@ function App() {
         done: !items[idx].done
       }
     }
-    setItems(
+    setItems((prevState)=>
       [
-        ...items.slice(0, idx),
+        ...prevState.slice(0, idx),
         newItem,
-        ...items.slice(idx + 1)
+        ...prevState.slice(idx + 1)
       ]
     )
   }
@@ -90,22 +98,30 @@ function App() {
 
 
   const onAddItem = () => {
-    const id = items.length ? items[items.length - 1].id + 1 : 1
+    const idx = itemsArr.length ? items.length + 1 : 1
+    if(validateInput(inputValue) && validateDate(date)){
+      const newItem = {
+        text: inputValue,
+        important: false,
+        id: idx,
+        date,
+        done: false
+      };
+  
+      setItems((prevState)=>
+          [
+            ...prevState, newItem
+          ]
+        )
 
-    const newItem = {
-      text: inputValue,
-      important: false,
-      id: id,
-      date: "",
-      done: false
-    };
-
-    setItems((prevState)=>
-        [
-          [...prevState, newItem]
-        ]
-      ) 
+      setInputValue("")
+      setDate("")
+      setErrrorMessage(false)
+      }else{
+        setErrrorMessage(true)
+      }
     }
+    
   
 
   const onFilter = (items, filter) => {
@@ -142,16 +158,18 @@ function App() {
   }
 
 
-  const visibleItems = onSort(onFilter(items, filter), sort)
+  let visibleItems = onSort(items, sort)
+  visibleItems=onFilter(items, filter)
   return (
       <Container fluid style={{ borderRadius: ".75rem", backgroundColor: "#eff1f2" }}>
         <Row>
           <Col></Col>
+
           <Col xs={6}>
             <Header />
             <p>{date.toString()}</p>
             <AddItem onCalClick={onCalClick} onAddItem={onAddItem} onInputChange={onInputChange} inputValue={inputValue}/>
-
+            {errorMessage ? <ErrorMessage text="Add text and date"/>: null}
             <div className="d-flex justify-content-end align-items-center mb-4 pt-2 pb-3">
               <Filter onFilterChange={onFilterChange} />
               <Sort onSortChange={onSortChange} />
@@ -164,6 +182,7 @@ function App() {
               onDoneOrImp={onDoneOrImp}
             />
           </Col>
+
           <Col> {calClicked ?<TodoCalendar onCalChange={onCalChange} date={date}/>: null}</Col>
         </Row>
 
